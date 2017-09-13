@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://peachfuzzer.com/2012/Peach /peach/peach.xsd">
+
+	<!--Create data model -->
+	<DataModel name="TheDataModel">
+		<Blob/>
+	</DataModel>
+
+	<!-- Create state model -->
+	<StateModel name="TheState" initialState="Initial">
+		<State name="Initial">
+			
+			<Action type="output">
+				<DataModel ref="TheDataModel"/>
+				<Data fileName="C:\Users\allen harper\Downloads\peach-3.1.124-win-x64-release\rm_samples\*.rm" />
+			</Action>
+
+			<Action type="close"/>
+
+			<Action type="call" method="ScoobySnacks" publisher="Peach.Agent"/>
+		</State>
+
+	</StateModel>
+
+	<!-- Configure Agent -->
+	<Agent name="TheAgent">
+		<Monitor class="WindowsDebugger">
+			<Param name="CommandLine" value="C:\Program Files (x86)\VideoLAN\VLC\vlc.exe fuzzed.rm" />
+			<Param name="WinDbgPath" value="C:\Program Files (x86)\Windows Kits\10\Debuggers\x64" />
+			<Param name="StartOnCall" value="ScoobySnacks"/>
+		</Monitor>
+		<Monitor class="PageHeap">
+			<Param name="Executable" value="vlc.exe"/>
+			<Param name="WinDbgPath" value="C:\Program Files (x86)\Windows Kits\10\Debuggers\x64" />
+		</Monitor>
+	</Agent>
+
+	<Test name="Default">
+		<Agent ref="TheAgent"/>
+		<StateModel ref="TheState"/>
+
+		<!-- Configure a publisher -->
+		<Publisher class="File">
+			<Param name="FileName" value="fuzzed.rm"/>
+		</Publisher>
+
+		<!--Configure a strategy -->
+		<Strategy class="RandomDeterministic"/>
+		
+		<Logger class="File">
+			<Param name="Path" value="logs"/>
+		</Logger>
+	</Test>
+
+</Peach>
+<!-- end -->

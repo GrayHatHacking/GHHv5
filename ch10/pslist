@@ -1,0 +1,26 @@
+function Translate-SID
+{
+    param([string]$SID)
+    $objSID = New-Object System.Security.Principal.SecurityIdentifier($SID)
+     try {
+         $objUser = $objSID.Translate([System.Security.Principal.NTAccount])
+         return $objUser.Value
+     }catch{
+         return "Unknown"	
+     }
+}
+
+Get-EventLog System -Source Microsoft-Windows-Winlogon | ForEach-Object{
+    $ret = New-Object PSObject
+    $UserProperty = Translate-SID $_.ReplacementStrings[1]
+    $time = $_.TimeGenerated
+
+    $ret | add-Member UserID $UserProperty
+    if($_.EventID -eq 7001) { 
+        $ret | add-Member Action "Logon" 
+    } else { 
+        $ret | add-Member Action "Logoff"
+    }
+    $ret | add-Member Time $time
+    $ret
+}
