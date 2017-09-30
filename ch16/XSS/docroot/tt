@@ -1,0 +1,48 @@
+<HTML><BODY><PRE>
+Array
+(
+    [HTTP_HOST] => localhost
+    [HTTP_USER_AGENT] => Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0
+    [HTTP_ACCEPT] => application/json, text/javascript, */*; q=0.01
+    [HTTP_ACCEPT_LANGUAGE] => en-US,en;q=0.5
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate
+    [HTTP_REFERER] => http://localhost/example3.html?name=asdfa&address=asdf&country=Afghanistan
+    [CONTENT_TYPE] => application/x-www-form-urlencoded; charset=UTF-8
+    [HTTP_X_REQUESTED_WITH] => XMLHttpRequest
+    [CONTENT_LENGTH] => 54
+    [HTTP_COOKIE] => auth=BAitGdYuupMjA3gl1aFoOwAAAAAAAAAA
+    [HTTP_CONNECTION] => keep-alive
+    [PATH] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    [SERVER_SIGNATURE] => <address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+
+    [SERVER_SOFTWARE] => Apache/2.4.7 (Ubuntu)
+    [SERVER_NAME] => localhost
+    [SERVER_ADDR] => 172.17.0.2
+    [SERVER_PORT] => 80
+    [REMOTE_ADDR] => 172.17.0.1
+    [DOCUMENT_ROOT] => /var/www/html
+    [REQUEST_SCHEME] => http
+    [CONTEXT_PREFIX] => 
+    [CONTEXT_DOCUMENT_ROOT] => /var/www/html
+    [SERVER_ADMIN] => webmaster@localhost
+    [SCRIPT_FILENAME] => /var/www/html/example3.php
+    [REMOTE_PORT] => 46240
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [REQUEST_METHOD] => POST
+    [QUERY_STRING] => 
+    [REQUEST_URI] => /example3.php
+    [SCRIPT_NAME] => /example3.php
+    [PHP_SELF] => /example3.php
+    [REQUEST_TIME_FLOAT] => 1506466971.514
+    [REQUEST_TIME] => 1506466971
+)
+Array
+(
+    [name] => asdf
+    [address] => asdf
+    [country] => Afghanistan
+    [action] => test
+)
+</PRE></BODY></HTML>
+
