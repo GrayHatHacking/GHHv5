@@ -26,7 +26,7 @@
 	<!-- Configure Agent -->
 	<Agent name="TheAgent">
 		<Monitor class="WindowsDebugger">
-			<Param name="CommandLine" value="C:\Program Files (x86)\VideoLAN\VLC\vlc.exe fuzzed.rm" />
+			<Param name="Command Line" value="C:\Program Files (x86)\VideoLAN\VLC\vlc.exe fuzzed.rm" />
 			<Param name="WinDbgPath" value="C:\Program Files (x86)\Windows Kits\10\Debuggers\x64" />
 			<Param name="StartOnCall" value="ScoobySnacks"/>
 		</Monitor>
