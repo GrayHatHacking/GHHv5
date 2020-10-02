@@ -8,7 +8,7 @@
 	</DataModel>
 
 	<!-- Create state model -->
-	<StateModel name="TheState" initialState="Initial">
+	<StateModel name="The State" initialState="Initial">
 		<State name="Initial">
 			
 			<Action type="output">
